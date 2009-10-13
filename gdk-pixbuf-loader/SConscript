@@ -1,0 +1,22 @@
+# vim: ft=python expandtab
+from subprocess import Popen, PIPE
+
+Import('env')
+env_gdk_pixbuf_loaders = env.Clone(PDB = 'librsvg_loader.pdb')
+
+env_gdk_pixbuf_loaders.Append(CPPDEFINES = ['GDK_PIXBUF_ENABLE_BACKEND'])
+env_gdk_pixbuf_loaders.Append(CPPPATH=['#'])
+
+libgdk_pixbuf_loaders_SOURCES =["io-svg.c"]
+gtk_binary_version = Popen(['pkg-config', 'gtk+-2.0', '--variable=gtk_binary_version'], stdout=PIPE).communicate()[0].rstrip('\r\n')
+
+rsvg_loader_dll = env_gdk_pixbuf_loaders.SharedLibrary('librsvg_loader', libgdk_pixbuf_loaders_SOURCES + ['#librsvg-2.lib'])
+env_gdk_pixbuf_loaders.AddPostAction(rsvg_loader_dll, 'mt.exe -nologo -manifest ${TARGET}.manifest -outputresource:$TARGET;2')
+loader_install = env_gdk_pixbuf_loaders.Install('$PREFIX/lib/gtk-2.0/' + gtk_binary_version + '/loaders', 'librsvg_loader.dll')
+env_gdk_pixbuf_loaders.Depends(
+        env_gdk_pixbuf_loaders.Command('gdk-pixbuf.loaders', ['$PREFIX\\bin\\gdk-pixbuf-query-loaders.exe'], '$SOURCE > $TARGET'),
+        loader_install)
+Alias('install', env_gdk_pixbuf_loaders.Install('$PREFIX/etc/gtk-2.0', 'gdk-pixbuf.loaders'))
+if env_gdk_pixbuf_loaders['DEBUG'] == 1:
+    Alias('install', env_gdk_pixbuf_loaders.Install('$PREFIX/pdb', env_gdk_pixbuf_loaders['PDB']))
+ 
