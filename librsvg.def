@@ -1,3 +1,4 @@
+EXPORTS
 rsvg_error_quark
 rsvg_error_get_type
 rsvg_init
