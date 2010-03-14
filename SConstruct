@@ -42,15 +42,16 @@ subdirs = ['gdk-pixbuf-loader/SConscript']
 if ARGUMENTS.get('build_test', 0):
     subdirs += ['tests/SConscript']
 
-env.ParseConfig('pkg-config glib-2.0 --cflags --libs')
-env.ParseConfig('pkg-config gthread-2.0 --cflags --libs')
-env.ParseConfig('pkg-config cairo --cflags --libs')
-env.ParseConfig('pkg-config cairo-png --cflags --libs')
-env.ParseConfig('pkg-config pangocairo --cflags --libs')
+#env.ParseConfig('pkg-config glib-2.0 --cflags --libs')
+#env.ParseConfig('pkg-config gthread-2.0 --cflags --libs')
+#env.ParseConfig('pkg-config cairo --cflags --libs')
+#env.ParseConfig('pkg-config cairo-png --cflags --libs')
+#env.ParseConfig('pkg-config pangocairo --cflags --libs')
 env.ParseConfig('pkg-config libxml-2.0 --cflags --libs')
-env.ParseConfig('pkg-config gio-2.0 --cflags --libs')
+#env.ParseConfig('pkg-config gio-2.0 --cflags --libs')
 env.ParseConfig('pkg-config gtk+-2.0 --cflags --libs')
-env.ParseConfig('pkg-config gdk-pixbuf-2.0 --cflags --libs')
+#env.ParseConfig('pkg-config gdk-pixbuf-2.0 --cflags --libs')
+env.ParseConfig('pkg-config freetype2 --cflags --libs')
 
 SConscript(subdirs, exports=['env'])
 
